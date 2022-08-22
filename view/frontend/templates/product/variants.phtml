@@ -1,0 +1,33 @@
+<?php
+use Magento\Swatches\Model\Swatch;
+
+/** @var EcomHouse\ProductVariants\Block\Index $block */
+$collection = $block->getOptionsVariantsArray();
+$productId = $block->getProduct()->getId();
+?>
+<div class="product-variants swatch-attribute">
+    <?php foreach ($collection as $item): ?>
+        <div class="variants">
+            <span class="swatch-attribute-label"><?php echo $item['label'] ?></span>
+            <div class="swatch-attribute-options clearfix">
+                <?php foreach ($item['value'] as $value): ?>
+                    <a href="<?php echo $value['path'] ?>" style="display: inline-block;">
+                        <?php if ($value['swatch_type'] === Swatch::SWATCH_TYPE_VISUAL_IMAGE): ?>
+                            <div class="variant swatch-option text <?php echo $value['class'] ?>">
+                                <img src="/media/attribute/swatch<?= $value['swatch_value'] ?>"
+                                     alt="<?= $value['attribute_text'] ?>">
+                            </div>
+                        <?php elseif ($value['swatch_type'] === Swatch::SWATCH_TYPE_VISUAL_COLOR): ?>
+                            <div class="variant swatch-option text <?php echo $value['class'] ?>"
+                                 style="background: <?= $value['swatch_value']; ?>"></div>
+                        <?php else: ?>
+                            <div class="variant swatch-option custom-option-text text <?php echo $value['class'] ?>">
+                                <span><?php echo $value['attribute_text'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>

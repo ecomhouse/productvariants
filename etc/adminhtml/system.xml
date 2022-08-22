@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="ecomhouse" translate="label" sortOrder="1" class="ecomhouse-tab">
+            <label>EcomHouse Extensions</label>
+        </tab>
+        <section id="ecomhouse_productvariants" translate="label" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Product Variants</label>
+            <tab>ecomhouse</tab>
+            <resource>EcomHouse_ProductVariants::config</resource>
+            <group id="general" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable module</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Select 'Yes' to enable this module</comment>
+                </field>
+                <field id="only_simple" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Only Simple Products</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Select only simple products for products grid in form</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

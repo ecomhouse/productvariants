@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+	<acl>
+		<resources>
+			<resource id="Magento_Backend::admin">
+				<resource id="EcomHouse_ProductVariants::config" title="Product Variants" sortOrder="1"/>
+				<resource id="EcomHouse_ProductVariants::Group" title="Group" sortOrder="10">
+					<resource id="EcomHouse_ProductVariants::Group_save" title="Save Group" sortOrder="10"/>
+					<resource id="EcomHouse_ProductVariants::Group_delete" title="Delete Group" sortOrder="20"/>
+					<resource id="EcomHouse_ProductVariants::Group_update" title="Update Group" sortOrder="30"/>
+					<resource id="EcomHouse_ProductVariants::Group_view" title="View Group" sortOrder="40"/>
+				</resource>
+			</resource>
+		</resources>
+	</acl>
+</config>

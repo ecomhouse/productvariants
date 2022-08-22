@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<preference for="EcomHouse\ProductVariants\Api\GroupRepositoryInterface" type="EcomHouse\ProductVariants\Model\GroupRepository"/>
+	<preference for="EcomHouse\ProductVariants\Api\Data\GroupInterface" type="EcomHouse\ProductVariants\Model\Group"/>
+	<preference for="EcomHouse\ProductVariants\Api\Data\GroupSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+	<virtualType name="EcomHouse\ProductVariants\Model\ResourceModel\Group\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+		<arguments>
+			<argument name="mainTable" xsi:type="string">product_variant_group</argument>
+			<argument name="resourceModel" xsi:type="string">EcomHouse\ProductVariants\Model\ResourceModel\Group\Collection</argument>
+		</arguments>
+	</virtualType>
+	<type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+		<arguments>
+			<argument name="collections" xsi:type="array">
+				<item name="ecomhouse_productvariants_group_listing_data_source" xsi:type="string">EcomHouse\ProductVariants\Model\ResourceModel\Group\Grid\Collection</item>
+			</argument>
+		</arguments>
+	</type>
+</config>

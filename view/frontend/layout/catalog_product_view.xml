@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <container name="product.variants.wrapper" as="product.variants.wrapper" label="Product Variants Wrapper" htmlTag="div" htmlClass="product-variants-wrapper">
+                <block class="EcomHouse\ProductVariants\Block\Index" name="product.variants" ifconfig="ecomhouse_productvariants/general/enable" template="EcomHouse_ProductVariants::product/variants.phtml" after="-" />
+            </container>
+        </referenceContainer>
+        <move element="product.variants.wrapper" destination="product.info.main" after="product.info.price"/>
+    </body>
+</page>

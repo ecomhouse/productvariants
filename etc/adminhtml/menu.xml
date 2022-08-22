@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+      <add id="EcomHouse_ProductVariants::section"
+             title="Product Variants"
+             module="EcomHouse_ProductVariants"
+             sortOrder="60"
+             parent="EcomHouseExtensions_Base::menu"
+             resource="EcomHouse_ProductVariants::section"/>
+        <add id="EcomHouse_ProductVariants::parent"
+             title="Product Variants"
+             module="EcomHouse_ProductVariants"
+             sortOrder="61"
+             parent="EcomHouseExtensions_Base::menu"
+             resource="EcomHouse_ProductVariants::parent"/>
+        <add id="EcomHouse_ProductVariants::group"
+             title="Manage Groups"
+             module="EcomHouse_ProductVariants"
+             translate="title"
+             sortOrder="62"
+             parent="EcomHouse_ProductVariants::parent"
+             action="ecomhouse_productvariants/group"
+             resource="EcomHouse_ProductVariants::group"/>
+        <add id="EcomHouse_ProductVariants::config"
+             title="Configuration"
+             module="EcomHouse_ProductVariants"
+             translate="title"
+             sortOrder="63"
+             parent="EcomHouse_ProductVariants::parent"
+             action="adminhtml/system_config/edit/section/ecomhouse_productvariants"
+             resource="EcomHouse_ProductVariants::config"/>
+    </menu>
+</config>

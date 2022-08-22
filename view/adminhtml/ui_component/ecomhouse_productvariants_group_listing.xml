@@ -1,0 +1,110 @@
+<?xml version="1.0" ?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+	<argument name="data" xsi:type="array">
+		<item name="js_config" xsi:type="array">
+			<item name="provider" xsi:type="string">ecomhouse_productvariants_group_listing.ecomhouse_productvariants_group_listing_data_source</item>
+		</item>
+	</argument>
+	<settings>
+		<spinner>ecomhouse_productvariants_group_columns</spinner>
+		<deps>
+			<dep>ecomhouse_productvariants_group_listing.ecomhouse_productvariants_group_listing_data_source</dep>
+		</deps>
+		<buttons>
+			<button name="add">
+				<url path="*/*/new"/>
+				<class>primary</class>
+				<label translate="true">Add new Group</label>
+			</button>
+		</buttons>
+	</settings>
+	<dataSource name="ecomhouse_productvariants_group_listing_data_source" component="Magento_Ui/js/grid/provider">
+		<settings>
+			<storageConfig>
+				<param name="indexField" xsi:type="string">group_id</param>
+			</storageConfig>
+			<updateUrl path="mui/index/render"/>
+		</settings>
+		<aclResource>EcomHouse_ProductVariants::Group</aclResource>
+		<dataProvider name="ecomhouse_productvariants_group_listing_data_source" class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+			<settings>
+				<requestFieldName>id</requestFieldName>
+				<primaryFieldName>group_id</primaryFieldName>
+			</settings>
+		</dataProvider>
+	</dataSource>
+	<listingToolbar name="listing_top">
+		<settings>
+			<sticky>true</sticky>
+		</settings>
+		<bookmark name="bookmarks"/>
+		<columnsControls name="columns_controls"/>
+		<filters name="listing_filters"/>
+		<paging name="listing_paging"/>
+	</listingToolbar>
+	<columns name="ecomhouse_productvariants_group_columns">
+		<settings>
+			<editorConfig>
+				<param name="selectProvider" xsi:type="string">ecomhouse_productvariants_group_listing.ecomhouse_productvariants_group_listing.ecomhouse_productvariants_group_columns.ids</param>
+				<param name="enabled" xsi:type="boolean">true</param>
+				<param name="indexField" xsi:type="string">group_id</param>
+				<param name="clientConfig" xsi:type="array">
+					<item name="saveUrl" xsi:type="url" path="ecomhouse_productvariants/Group/inlineEdit"/>
+					<item name="validateBeforeSave" xsi:type="boolean">false</item>
+				</param>
+			</editorConfig>
+			<childDefaults>
+				<param name="fieldAction" xsi:type="array">
+					<item name="provider" xsi:type="string">ecomhouse_productvariants_group_listing.ecomhouse_productvariants_group_listing.ecomhouse_productvariants_group_columns_editor</item>
+					<item name="target" xsi:type="string">startEdit</item>
+					<item name="params" xsi:type="array">
+						<item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
+						<item name="1" xsi:type="boolean">true</item>
+					</item>
+				</param>
+			</childDefaults>
+		</settings>
+		<selectionsColumn name="ids">
+			<settings>
+				<indexField>group_id</indexField>
+			</settings>
+		</selectionsColumn>
+		<column name="group_id">
+			<settings>
+				<filter>text</filter>
+				<sorting>asc</sorting>
+				<label translate="true">ID</label>
+			</settings>
+		</column>
+		<column name="group_name">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Group name</label>
+				<editor>
+					<editorType>text</editorType>
+					<validation>
+						<rule name="required-entry" xsi:type="boolean">true</rule>
+					</validation>
+				</editor>
+			</settings>
+		</column>
+        <column name="status" class="EcomHouse\ProductVariants\Ui\Component\Listing\Column\Status">
+            <settings>
+                <options class="Magento\Config\Model\Config\Source\Yesno"/>
+                <filter>select</filter>
+                <editor>
+                    <editorType>select</editorType>
+                </editor>
+                <dataType>select</dataType>
+                <label translate="true">Status</label>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="EcomHouse\ProductVariants\Ui\Component\Listing\Column\GroupActions">
+            <settings>
+                <indexField>group_id</indexField>
+                <resizeEnabled>false</resizeEnabled>
+                <resizeDefaultWidth>107</resizeDefaultWidth>
+            </settings>
+        </actionsColumn>
+	</columns>
+</listing>
