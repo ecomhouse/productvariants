@@ -5,50 +5,25 @@ namespace EcomHouse\ProductVariants\Model;
 
 use EcomHouse\ProductVariants\Api\Data\GroupInterface;
 use EcomHouse\ProductVariants\Api\Data\GroupInterfaceFactory;
+use EcomHouse\ProductVariants\Api\Data\GroupSearchResultsInterface;
 use EcomHouse\ProductVariants\Api\Data\GroupSearchResultsInterfaceFactory;
 use EcomHouse\ProductVariants\Api\GroupRepositoryInterface;
 use EcomHouse\ProductVariants\Model\ResourceModel\Group as ResourceGroup;
 use EcomHouse\ProductVariants\Model\ResourceModel\Group\CollectionFactory as GroupCollectionFactory;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
+use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 class GroupRepository implements GroupRepositoryInterface
 {
-    /**
-     * @var GroupCollectionFactory
-     */
-    protected $groupCollectionFactory;
+    protected GroupCollectionFactory $groupCollectionFactory;
+    protected CollectionProcessorInterface $collectionProcessor;
+    protected ResourceGroup $resource;
+    protected GroupSearchResultsInterfaceFactory $searchResultsFactory;
+    protected GroupInterfaceFactory $groupFactory;
 
-    /**
-     * @var CollectionProcessorInterface
-     */
-    protected $collectionProcessor;
-
-    /**
-     * @var ResourceGroup
-     */
-    protected $resource;
-
-    /**
-     * @var Group
-     */
-    protected $searchResultsFactory;
-
-    /**
-     * @var GroupInterfaceFactory
-     */
-    protected $groupFactory;
-
-
-    /**
-     * @param ResourceGroup $resource
-     * @param GroupInterfaceFactory $groupFactory
-     * @param GroupCollectionFactory $groupCollectionFactory
-     * @param GroupSearchResultsInterfaceFactory $searchResultsFactory
-     * @param CollectionProcessorInterface $collectionProcessor
-     */
     public function __construct(
         ResourceGroup $resource,
         GroupInterfaceFactory $groupFactory,
@@ -63,10 +38,7 @@ class GroupRepository implements GroupRepositoryInterface
         $this->collectionProcessor = $collectionProcessor;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function save(GroupInterface $group)
+    public function save(GroupInterface $group): GroupInterface
     {
         try {
             $this->resource->save($group);
@@ -79,10 +51,7 @@ class GroupRepository implements GroupRepositoryInterface
         return $group;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function get($groupId)
+    public function get(int $groupId): GroupInterface
     {
         $group = $this->groupFactory->create();
         $this->resource->load($group, $groupId);
@@ -92,12 +61,9 @@ class GroupRepository implements GroupRepositoryInterface
         return $group;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getList(
-        \Magento\Framework\Api\SearchCriteriaInterface $criteria
-    ) {
+        SearchCriteriaInterface $criteria
+    ): GroupSearchResultsInterface {
         $collection = $this->groupCollectionFactory->create();
 
         $this->collectionProcessor->process($criteria, $collection);
@@ -105,25 +71,18 @@ class GroupRepository implements GroupRepositoryInterface
         $searchResults = $this->searchResultsFactory->create();
         $searchResults->setSearchCriteria($criteria);
 
-        $items = [];
-        foreach ($collection as $model) {
-            $items[] = $model;
-        }
+        /** @var GroupInterface[] $items */
+        $items = $collection->getItems();
 
         $searchResults->setItems($items);
         $searchResults->setTotalCount($collection->getSize());
         return $searchResults;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function delete(GroupInterface $group)
+    public function delete(GroupInterface $group): bool
     {
         try {
-            $groupModel = $this->groupFactory->create();
-            $this->resource->load($groupModel, $group->getGroupId());
-            $this->resource->delete($groupModel);
+            $this->resource->delete($group);
         } catch (\Exception $exception) {
             throw new CouldNotDeleteException(__(
                 'Could not delete the Group: %1',
@@ -133,12 +92,8 @@ class GroupRepository implements GroupRepositoryInterface
         return true;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function deleteById($groupId)
+    public function deleteById(int $groupId): bool
     {
         return $this->delete($this->get($groupId));
     }
 }
-

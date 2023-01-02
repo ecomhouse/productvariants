@@ -3,63 +3,55 @@ declare(strict_types=1);
 
 namespace EcomHouse\ProductVariants\Controller\Adminhtml\Group;
 
-use EcomHouse\ProductVariants\Controller\Adminhtml\Group;
+use EcomHouse\ProductVariants\Api\Data\GroupInterfaceFactory;
+use EcomHouse\ProductVariants\Api\GroupRepositoryInterface;
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\View\Result\PageFactory;
 
-class Edit extends Group
+class Edit extends Action implements HttpGetActionInterface
 {
-    protected $resultPageFactory;
+    const ADMIN_RESOURCE = 'EcomHouse_ProductVariants::Group_save';
 
-    /**
-     * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Framework\Registry $coreRegistry
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
-     */
+    protected PageFactory $resultPageFactory;
+    private GroupRepositoryInterface $groupRepository;
+    private GroupInterfaceFactory $groupFactory;
+
     public function __construct(
-        \Magento\Backend\App\Action\Context        $context,
-        \Magento\Framework\Registry                $coreRegistry,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory
-    )
-    {
+        Context $context,
+        PageFactory $resultPageFactory,
+        GroupRepositoryInterface $groupRepository,
+        GroupInterfaceFactory $groupFactory
+    ) {
+        parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
-        parent::__construct($context, $coreRegistry);
+        $this->groupRepository = $groupRepository;
+        $this->groupFactory = $groupFactory;
     }
 
-    /**
-     * Edit action
-     *
-     * @return \Magento\Framework\Controller\ResultInterface
-     */
-    public function execute()
+    public function execute(): \Magento\Framework\Controller\ResultInterface
     {
-        // 1. Get ID and create model
         $id = $this->getRequest()->getParam('group_id');
-        $model = $this->_objectManager->create(\EcomHouse\ProductVariants\Model\Group::class);
+        $group = $this->groupFactory->create();
 
-        // 2. Initial checking
         if ($id) {
-            $model->load($id);
-            if (!$model->getId()) {
+            try {
+                $group = $this->groupRepository->get((int)$id);
+            } catch (LocalizedException $e) {
                 $this->messageManager->addErrorMessage(__('This Group no longer exists.'));
-                /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
                 $resultRedirect = $this->resultRedirectFactory->create();
                 return $resultRedirect->setPath('*/*/');
             }
         }
-        $this->_coreRegistry->register('ecomhouse_productvariants_group', $model);
 
-        // 3. Build edit form
-        /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
 
-        $this->initPage($resultPage)->addBreadcrumb(
-            $id ? __('Edit Group') : __('New Group'),
-            $id ? __('Edit Group') : __('New Group')
-        );
-
         $resultPage->getConfig()->getTitle()->prepend(__('Groups'));
-        $resultPage->getConfig()->getTitle()->prepend($model->getId() ? __('Edit Group %1', $model->getId()) : __('New Group'));
+        $resultPage->getConfig()->getTitle()
+            ->prepend($group->getGroupId() ? __('Edit Group') : __('New Group'));
 
         return $resultPage;
     }
 }
-

@@ -1,16 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EcomHouse\ProductVariants\Block\Adminhtml\Group\Edit;
+namespace EcomHouse\ProductVariants\Ui\Component\Control\Group;
 
-use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
-
-class DeleteButton extends GenericButton implements ButtonProviderInterface
+class DeleteButton extends GenericButton
 {
-    /**
-     * @return array
-     */
-    public function getButtonData()
+    public function getButtonData(): array
     {
         $data = [];
         if ($this->getModelId()) {
@@ -26,14 +21,8 @@ class DeleteButton extends GenericButton implements ButtonProviderInterface
         return $data;
     }
 
-    /**
-     * Get URL for delete button
-     *
-     * @return string
-     */
-    public function getDeleteUrl()
+    public function getDeleteUrl(): string
     {
         return $this->getUrl('*/*/delete', ['group_id' => $this->getModelId()]);
     }
 }
-

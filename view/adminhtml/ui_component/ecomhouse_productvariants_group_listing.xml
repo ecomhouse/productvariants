@@ -43,27 +43,6 @@
 		<paging name="listing_paging"/>
 	</listingToolbar>
 	<columns name="ecomhouse_productvariants_group_columns">
-		<settings>
-			<editorConfig>
-				<param name="selectProvider" xsi:type="string">ecomhouse_productvariants_group_listing.ecomhouse_productvariants_group_listing.ecomhouse_productvariants_group_columns.ids</param>
-				<param name="enabled" xsi:type="boolean">true</param>
-				<param name="indexField" xsi:type="string">group_id</param>
-				<param name="clientConfig" xsi:type="array">
-					<item name="saveUrl" xsi:type="url" path="ecomhouse_productvariants/Group/inlineEdit"/>
-					<item name="validateBeforeSave" xsi:type="boolean">false</item>
-				</param>
-			</editorConfig>
-			<childDefaults>
-				<param name="fieldAction" xsi:type="array">
-					<item name="provider" xsi:type="string">ecomhouse_productvariants_group_listing.ecomhouse_productvariants_group_listing.ecomhouse_productvariants_group_columns_editor</item>
-					<item name="target" xsi:type="string">startEdit</item>
-					<item name="params" xsi:type="array">
-						<item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
-						<item name="1" xsi:type="boolean">true</item>
-					</item>
-				</param>
-			</childDefaults>
-		</settings>
 		<selectionsColumn name="ids">
 			<settings>
 				<indexField>group_id</indexField>
@@ -80,23 +59,14 @@
 			<settings>
 				<filter>text</filter>
 				<label translate="true">Group name</label>
-				<editor>
-					<editorType>text</editorType>
-					<validation>
-						<rule name="required-entry" xsi:type="boolean">true</rule>
-					</validation>
-				</editor>
 			</settings>
 		</column>
-        <column name="status" class="EcomHouse\ProductVariants\Ui\Component\Listing\Column\Status">
+        <column name="status">
             <settings>
                 <options class="Magento\Config\Model\Config\Source\Yesno"/>
                 <filter>select</filter>
-                <editor>
-                    <editorType>select</editorType>
-                </editor>
                 <dataType>select</dataType>
-                <label translate="true">Status</label>
+                <label translate="true">Enabled</label>
             </settings>
         </column>
         <actionsColumn name="actions" class="EcomHouse\ProductVariants\Ui\Component\Listing\Column\GroupActions">

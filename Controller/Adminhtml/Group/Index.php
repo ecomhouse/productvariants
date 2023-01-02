@@ -4,32 +4,26 @@ declare(strict_types=1);
 namespace EcomHouse\ProductVariants\Controller\Adminhtml\Group;
 
 use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\View\Result\PageFactory;
 
-class Index extends Action
+class Index extends Action implements HttpGetActionInterface
 {
-    protected $resultPageFactory;
+    const ADMIN_RESOURCE = 'EcomHouse_ProductVariants::Group_view';
 
-    /**
-     * Constructor
-     *
-     * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
-     */
+    protected PageFactory $resultPageFactory;
+
     public function __construct(
-        \Magento\Backend\App\Action\Context        $context,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory
-    )
-    {
+        Context $context,
+        PageFactory $resultPageFactory
+    ) {
         $this->resultPageFactory = $resultPageFactory;
         parent::__construct($context);
     }
 
-    /**
-     * Index action
-     *
-     * @return \Magento\Framework\Controller\ResultInterface
-     */
-    public function execute()
+    public function execute(): ResultInterface
     {
         $resultPage = $this->resultPageFactory->create();
         $resultPage->getConfig()->getTitle()->prepend(__("Group"));

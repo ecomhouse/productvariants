@@ -3,9 +3,14 @@
     <body>
         <referenceContainer name="content">
             <container name="product.variants.wrapper" as="product.variants.wrapper" label="Product Variants Wrapper" htmlTag="div" htmlClass="product-variants-wrapper">
-                <block class="EcomHouse\ProductVariants\Block\Index" name="product.variants" ifconfig="ecomhouse_productvariants/general/enable" template="EcomHouse_ProductVariants::product/variants.phtml" after="-" />
+                <block name="product.variants" template="EcomHouse_ProductVariants::product/variants.phtml" after="-" ifconfig="ecomhouse_productvariants/general/enable">
+                    <arguments>
+                        <argument name="view_model" xsi:type="object">EcomHouse\ProductVariants\ViewModel\ProductVariants</argument>
+                    </arguments>
+                </block>
             </container>
         </referenceContainer>
         <move element="product.variants.wrapper" destination="product.info.main" after="product.info.price"/>
     </body>
 </page>
+

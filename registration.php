@@ -5,8 +5,6 @@
  * @package Ecom House
  */
 
-\Magento\Framework\Component\ComponentRegistrar::register(
-    \Magento\Framework\Component\ComponentRegistrar::MODULE,
-    'EcomHouse_ProductVariants',
-    __DIR__
-);
+use Magento\Framework\Component\ComponentRegistrar;
+
+ComponentRegistrar::register(ComponentRegistrar::MODULE, 'EcomHouse_ProductVariants', __DIR__);

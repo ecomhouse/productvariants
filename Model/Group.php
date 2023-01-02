@@ -4,65 +4,62 @@ declare(strict_types=1);
 namespace EcomHouse\ProductVariants\Model;
 
 use EcomHouse\ProductVariants\Api\Data\GroupInterface;
+use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\Model\AbstractModel;
 
-class Group extends AbstractModel implements GroupInterface
+/**
+ * @method array getAttributeIds()
+ * @method Group setAttributeIds(array $attributeIds)
+ * @method array getProductIds()
+ * @method Group setProductIds(array $productIds)
+ */
+class Group extends AbstractModel implements GroupInterface, IdentityInterface
 {
+    const CACHE_TAG = 'ecomhouse_productvariants_group';
 
-    /**
-     * @inheritDoc
-     */
+    protected $_cacheTag = 'ecomhouse_productvariants_group';
+
+    protected $_eventPrefix = 'ecomhouse_productvariants_group';
+
     public function _construct()
     {
-        $this->_init(\EcomHouse\ProductVariants\Model\ResourceModel\Group::class);
+        $this->_init(ResourceModel\Group::class);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getGroupId()
+    public function getIdentities(): array
     {
-        return $this->getData(self::GROUP_ID);
+        return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function setGroupId($groupId)
+    public function getGroupId(): ?int
+    {
+        $id = $this->getData(self::GROUP_ID);
+
+        return $id ? (int) $id : null;
+    }
+
+    public function setGroupId(int $groupId): GroupInterface
     {
         return $this->setData(self::GROUP_ID, $groupId);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getGroupName()
+    public function getGroupName(): string
     {
         return $this->getData(self::GROUP_NAME);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function setGroupName($groupName)
+    public function setGroupName(string $groupName): GroupInterface
     {
         return $this->setData(self::GROUP_NAME, $groupName);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getStatus()
+    public function getStatus(): ?string
     {
         return $this->getData(self::STATUS);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function setStatus($status)
+    public function setStatus(string $status): GroupInterface
     {
         return $this->setData(self::STATUS, $status);
     }
 }
-

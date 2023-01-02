@@ -1,31 +1,31 @@
 <?xml version="1.0" ?>
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
-<!--	<table name="product_variant_group" resource="default" engine="innodb" comment="Product Variant Group Table">-->
-<!--		<column xsi:type="int" name="group_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Product variant group ID"/>-->
-<!--		<constraint xsi:type="primary" referenceId="PRIMARY">-->
-<!--			<column name="group_id"/>-->
-<!--		</constraint>-->
-<!--		<column name="group_name" nullable="false" xsi:type="varchar" length="255" comment="Product variant group name"/>-->
-<!--		<column name="status" nullable="true" xsi:type="boolean" comment="Product variant group status"/>-->
-<!--	</table>-->
-<!--    <table name="product_variant_group_relation" resource="default" engine="innodb" comment="Product Variant Group Relation Table">-->
-<!--        <column xsi:type="int" name="group_id" padding="10" unsigned="true" nullable="false" comment="Group ID"/>-->
-<!--        <column xsi:type="int" name="product_id" padding="10" unsigned="true" nullable="false" comment="Product ID"/>-->
-<!--        <constraint xsi:type="foreign" referenceId="product_variant_group_relation_group_id" table="product_variant_group_relation"-->
-<!--                    column="group_id" referenceTable="product_variant_group" referenceColumn="group_id" />-->
-<!--        <constraint xsi:type="foreign" referenceId="product_variant_group_relation_product_id" table="product_variant_group_relation"-->
-<!--                    column="product_id" referenceTable="catalog_product_entity" referenceColumn="entity_id" />-->
-<!--    </table>-->
-<!--    <table name="product_variant_options" resource="default" engine="innodb" comment="Product Variant Options Table">-->
-<!--        <column xsi:type="int" name="option_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Product variant option ID"/>-->
-<!--        <constraint xsi:type="primary" referenceId="PRIMARY">-->
-<!--            <column name="option_id"/>-->
-<!--        </constraint>-->
-<!--        <column xsi:type="int" name="group_id" padding="10" unsigned="true" nullable="false" comment="Product variant group ID"/>-->
-<!--        <column xsi:type="int" name="attribute_id" padding="10" unsigned="true" nullable="false" comment="Eav Attribute ID"/>-->
-<!--        <constraint xsi:type="foreign" referenceId="product_variant_options_group_id" table="product_variant_options"-->
-<!--                    column="group_id" referenceTable="product_variant_group" referenceColumn="group_id" />-->
-<!--        <constraint xsi:type="foreign" referenceId="product_variant_options_attribute_id" table="product_variant_options"-->
-<!--                    column="attribute_id" referenceTable="eav_attribute" referenceColumn="attribute_id" />-->
-<!--    </table>-->
+	<table name="product_variant_group" resource="default" engine="innodb" comment="Product Variant Group Table">
+		<column xsi:type="int" name="group_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Product variant group ID"/>
+		<column xsi:type="varchar" name="group_name" nullable="false" length="255" comment="Product variant group name"/>
+        <column xsi:type="boolean" name="status" nullable="true" comment="Product variant group status"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="group_id"/>
+        </constraint>
+    </table>
+    <table name="product_variant_group_relation" resource="default" engine="innodb" comment="Product Variant Group Relation Table">
+        <column xsi:type="int" name="group_id" padding="10" unsigned="true" nullable="false" comment="Group ID"/>
+        <column xsi:type="int" name="product_id" padding="10" unsigned="true" nullable="false" comment="Product ID"/>
+        <constraint xsi:type="foreign" referenceId="product_variant_group_relation_group_id" table="product_variant_group_relation"
+                    column="group_id" referenceTable="product_variant_group" referenceColumn="group_id" />
+        <constraint xsi:type="foreign" referenceId="product_variant_group_relation_product_id" table="product_variant_group_relation"
+                    column="product_id" referenceTable="catalog_product_entity" referenceColumn="entity_id" />
+    </table>
+    <table name="product_variant_options" resource="default" engine="innodb" comment="Product Variant Options Table">
+        <column xsi:type="int" name="option_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Product variant option ID"/>
+        <column xsi:type="int" name="group_id" padding="10" unsigned="true" nullable="false" comment="Product variant group ID"/>
+        <column xsi:type="smallint" name="attribute_id" padding="10" unsigned="true" nullable="false" comment="Eav Attribute ID"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="option_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="product_variant_options_group_id" table="product_variant_options"
+                    column="group_id" referenceTable="product_variant_group" referenceColumn="group_id" />
+        <constraint xsi:type="foreign" referenceId="product_variant_options_attribute_id" table="product_variant_options"
+                    column="attribute_id" referenceTable="eav_attribute" referenceColumn="attribute_id" />
+    </table>
 </schema>

@@ -3,25 +3,22 @@ declare(strict_types=1);
 
 namespace EcomHouse\ProductVariants\Ui\Component\Listing\Column;
 
-class GroupActions extends \Magento\Ui\Component\Listing\Columns\Column
-{
+use Magento\Framework\UrlInterface;
+use Magento\Framework\View\Element\UiComponent\ContextInterface;
+use Magento\Framework\View\Element\UiComponentFactory;
+use Magento\Ui\Component\Listing\Columns\Column;
 
+class GroupActions extends Column
+{
     const URL_PATH_EDIT = 'ecomhouse_productvariants/group/edit';
     const URL_PATH_DELETE = 'ecomhouse_productvariants/group/delete';
-    const URL_PATH_DETAILS = 'ecomhouse_productvariants/group/details';
-    protected $urlBuilder;
 
-    /**
-     * @param \Magento\Framework\View\Element\UiComponent\ContextInterface $context
-     * @param \Magento\Framework\View\Element\UiComponentFactory $uiComponentFactory
-     * @param \Magento\Framework\UrlInterface $urlBuilder
-     * @param array $components
-     * @param array $data
-     */
+    protected UrlInterface $urlBuilder;
+
     public function __construct(
-        \Magento\Framework\View\Element\UiComponent\ContextInterface $context,
-        \Magento\Framework\View\Element\UiComponentFactory $uiComponentFactory,
-        \Magento\Framework\UrlInterface $urlBuilder,
+        ContextInterface $context,
+        UiComponentFactory $uiComponentFactory,
+        UrlInterface $urlBuilder,
         array $components = [],
         array $data = []
     ) {
@@ -29,13 +26,7 @@ class GroupActions extends \Magento\Ui\Component\Listing\Columns\Column
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 
-    /**
-     * Prepare Data Source
-     *
-     * @param array $dataSource
-     * @return array
-     */
-    public function prepareDataSource(array $dataSource)
+    public function prepareDataSource(array $dataSource): array
     {
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
@@ -71,4 +62,3 @@ class GroupActions extends \Magento\Ui\Component\Listing\Columns\Column
         return $dataSource;
     }
 }
-

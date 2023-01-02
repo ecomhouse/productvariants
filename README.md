@@ -35,7 +35,7 @@ bin/magento setup:upgrade && bin/magento setup:static-content:deploy -f && bin/m
 1. Run commend
 
 ```
-composer require ecomhouse/productvariants dev-master
+composer require ecomhouse/productvariants
 ```
 
 
@@ -51,5 +51,4 @@ composer require ecomhouse/productvariants dev-master
 - [user guide PL](https://docs.google.com/presentation/d/10I9hlopEZfZa1vVYakOdzZ5Rkdr3E-_yeEC-hq8ZMok/edit?usp=sharing)
 - [user guide EN](https://docs.google.com/presentation/d/1Y33sTS6Mz6a0E2j_8mZTQORoegpA9_DIgpB42lbsWU0/edit?usp=sharing)
 
-[img1]: prev1.jpg
-[img2]: prev2.jpg
+[img1]: files/prev1.jpg

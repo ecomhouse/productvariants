@@ -14,12 +14,12 @@
                 <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable module</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Select 'Yes' to enable this module</comment>
+                    <hint>Select 'Yes' to enable this module</hint>
                 </field>
                 <field id="only_simple" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Only Simple Products</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Select only simple products for products grid in form</comment>
+                    <hint>Select only simple products for products grid in form</hint>
                 </field>
             </group>
         </section>

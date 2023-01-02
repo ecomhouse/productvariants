@@ -4,19 +4,22 @@
 		<item name="js_config" xsi:type="array">
 			<item name="provider" xsi:type="string">ecomhouse_productvariants_group_form.group_form_data_source</item>
 		</item>
-		<item name="label" xsi:type="string" translate="true">General Information</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
 	</argument>
 	<settings>
 		<buttons>
-			<button name="back" class="EcomHouse\ProductVariants\Block\Adminhtml\Group\Edit\BackButton"/>
-			<button name="delete" class="EcomHouse\ProductVariants\Block\Adminhtml\Group\Edit\DeleteButton"/>
-			<button name="save" class="EcomHouse\ProductVariants\Block\Adminhtml\Group\Edit\SaveButton"/>
-			<button name="save_and_continue" class="EcomHouse\ProductVariants\Block\Adminhtml\Group\Edit\SaveAndContinueButton"/>
+            <button name="back">
+                <url path="*/*/index"/>
+                <class>back</class>
+                <label translate="true">Back</label>
+            </button>
+            <button name="save">
+                <class>save primary</class>
+                <label translate="true">Save</label>
+            </button>
+			<button name="delete" class="EcomHouse\ProductVariants\Ui\Component\Control\Group\DeleteButton"/>
+			<button name="save_and_continue" class="EcomHouse\ProductVariants\Ui\Component\Control\Group\SaveAndContinueButton"/>
 		</buttons>
-        <layout>
-            <navContainerName>left</navContainerName>
-            <type>tabs</type>
-        </layout>
 		<namespace>ecomhouse_productvariants_group_form</namespace>
 		<dataScope>data</dataScope>
 		<deps>
@@ -32,62 +35,31 @@
 		<settings>
 			<submitUrl path="*/*/save"/>
 		</settings>
-		<dataProvider name="group_form_data_source" class="EcomHouse\ProductVariants\Model\Group\DataProvider">
+		<dataProvider name="group_form_data_source" class="EcomHouse\ProductVariants\Ui\DataProvider\Group">
 			<settings>
 				<requestFieldName>group_id</requestFieldName>
 				<primaryFieldName>group_id</primaryFieldName>
 			</settings>
 		</dataProvider>
 	</dataSource>
-    <htmlContent name="product_variants_edit_tab_view_product_content">
-        <block class="EcomHouse\ProductVariants\Block\Adminhtml\Group\Edit\Tab\ProductTab" name="product_variants_edit_tab_product" template="EcomHouse_ProductVariants::tab/product.phtml">
-            <block class="EcomHouse\ProductVariants\Block\Adminhtml\Group\Edit\Tab\Product" name="product_variants_edit_tab_product_grid" />
-            <arguments>
-                <argument name="sort_order" xsi:type="number">100</argument>
-                <argument name="tab_label" xsi:type="string" translate="true">Select products</argument>
-            </arguments>
-            <block class="Magento\Backend\Block\Widget\Grid\Serializer" name="product_variants_edit_tab_product_grid_serializer">
-                <arguments>
-                    <argument name="grid_block" xsi:type="string">product_variants_edit_tab_product_grid</argument>
-                    <argument name="callback" xsi:type="string">_getSelectedProducts</argument>
-                    <argument name="input_element_name" xsi:type="string">product[list]</argument>
-                    <argument name="reload_param_name" xsi:type="string">in_products</argument>
-                </arguments>
-            </block>
-            <block name="product_variants_grid_script_js" template="EcomHouse_ProductVariants::tab/product-js.phtml"/>
-        </block>
-    </htmlContent>
-	<fieldset name="general">
-		<settings>
-			<label>General</label>
-		</settings>
-		<field name="group_name" formElement="input" sortOrder="10">
-			<argument name="data" xsi:type="array">
-				<item name="config" xsi:type="array">
-					<item name="source" xsi:type="string">Group</item>
-				</item>
-			</argument>
-			<settings>
-				<dataType>text</dataType>
-				<label translate="true">Group name</label>
-				<dataScope>group_name</dataScope>
-				<validation>
-					<rule name="required-entry" xsi:type="boolean">true</rule>
-				</validation>
-			</settings>
-		</field>
-        <field name="status" formElement="select" sortOrder="20">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="source" xsi:type="string">Group</item>
-                </item>
-            </argument>
+    <fieldset name="general">
+        <settings>
+            <label translate="true">General</label>
+        </settings>
+        <field name="group_id" formElement="hidden" />
+        <field name="group_name" formElement="input" sortOrder="10">
             <settings>
-                <dataType>text</dataType>
-                <label translate="true">Status</label>
-                <dataScope>status</dataScope>
+                <label translate="true">Group name</label>
                 <validation>
-                    <rule name="required-entry" xsi:type="boolean">false</rule>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+        <field name="status" formElement="select">
+            <settings>
+                <label translate="true">Is enabled?</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>
             </settings>
             <formElements>
@@ -98,7 +70,7 @@
                 </select>
             </formElements>
         </field>
-        <field name="attributes_ids">
+        <field name="attribute_ids">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">EcomHouse\ProductVariants\Model\Source\Attributes</item>
                 <item name="config" xsi:type="array">
@@ -109,7 +81,6 @@
                     <item name="formElement" xsi:type="string">select</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
                     <item name="elementTmpl" xsi:type="string">ui/grid/filters/elements/ui-select</item>
-                    <item name="dataScope" xsi:type="string">attributes_ids</item>
                     <item name="filterOptions" xsi:type="boolean">true</item>
                     <item name="showCheckbox" xsi:type="boolean">true</item>
                     <item name="disableLabel" xsi:type="boolean">true</item>
@@ -120,11 +91,211 @@
                     <item name="validation" xsi:type="array">
                         <item name="required-entry" xsi:type="boolean">true</item>
                     </item>
-                    <item name="listens" xsi:type="array">
-                        <item name="${ $.namespace }.${ $.namespace }:responseData" xsi:type="string">setParsed</item>
-                    </item>
                 </item>
             </argument>
         </field>
-	</fieldset>
+    </fieldset>
+    <fieldset name="products" sortOrder="50">
+        <settings>
+            <label translate="true">Products</label>
+            <collapsible>true</collapsible>
+            <opened>true</opened>
+            <dataScope>products</dataScope>
+        </settings>
+        <button name="assign_products_button" template="ui/form/components/button/container">
+            <settings>
+                <title translate="true">Assign Products</title>
+                <dataScope />
+            </settings>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">container</item>
+                    <item name="actions" xsi:type="array">
+                        <item name="0" xsi:type="array">
+                            <item name="targetName" xsi:type="string">ecomhouse_productvariants_group_form.ecomhouse_productvariants_group_form.products.assign_products_modal</item>
+                            <item name="actionName" xsi:type="string">toggleModal</item>
+                        </item>
+                    </item>
+                    <item name="additionalForGroup" xsi:type="boolean">true</item>
+                    <item name="additionalClasses" xsi:type="string">admin__field-small</item>
+                </item>
+            </argument>
+        </button>
+        <dynamicRows name="assigned_products" component="Magento_Ui/js/dynamic-rows/dynamic-rows-grid" sortOrder="20">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="dataProvider" xsi:type="string">data.products.assign_products_grid</item>
+                    <item name="map" xsi:type="array">
+                        <item name="entity_id" xsi:type="string">entity_id</item>
+                        <item name="name" xsi:type="string">name</item>
+                        <item name="status" xsi:type="string">status</item>
+                        <item name="attribute_set" xsi:type="string">attribute_set_text</item>
+                        <item name="sku" xsi:type="string">sku</item>
+                        <item name="price" xsi:type="string">price</item>
+                        <item name="thumbnail" xsi:type="string">thumbnail_src</item>
+                    </item>
+                    <item name="identificationDRProperty" xsi:type="string">entity_id</item>
+                </item>
+            </argument>
+            <settings>
+                <additionalClasses>
+                    <class name="admin__field-wide">true</class>
+                </additionalClasses>
+                <label />
+                <defaultRecord>false</defaultRecord>
+                <addButton>false</addButton>
+                <deleteProperty>true</deleteProperty>
+                <recordTemplate>record</recordTemplate>
+                <identificationProperty>entity_id</identificationProperty>
+                <links>
+                    <link name="insertData">${ $.provider }:${ $.dataProvider }</link>
+                </links>
+                <dndConfig>
+                    <param name="enabled" xsi:type="boolean">false</param>
+                    <param name="template" xsi:type="string">ui/dynamic-rows/cells/dnd</param>
+                </dndConfig>
+                <columnsHeader>true</columnsHeader>
+            </settings>
+            <container name="record" component="Magento_Ui/js/dynamic-rows/record">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="isTemplate" xsi:type="boolean">true</item>
+                        <item name="is_collection" xsi:type="boolean">true</item>
+                        <item name="dataScope" xsi:type="string" />
+                        <item name="positionProvider" xsi:type="string">entity_id</item>
+                    </item>
+                </argument>
+                <field name="entity_id" formElement="input" component="Magento_Ui/js/form/element/text">
+                    <settings>
+                        <elementTmpl>ui/dynamic-rows/cells/text</elementTmpl>
+                        <dataType>text</dataType>
+                        <dataScope>entity_id</dataScope>
+                        <label translate="true">Id</label>
+                        <componentType>field</componentType>
+                    </settings>
+                </field>
+                <field name="thumbnail" formElement="input">
+                    <settings>
+                        <elementTmpl>ui/dynamic-rows/cells/thumbnail</elementTmpl>
+                        <dataType>text</dataType>
+                        <dataScope>thumbnail</dataScope>
+                        <componentType>field</componentType>
+                        <label translate="true">Thumbnail</label>
+                    </settings>
+                </field>
+                <field name="name" formElement="input" component="Magento_Ui/js/form/element/text">
+                    <settings>
+                        <elementTmpl>ui/dynamic-rows/cells/text</elementTmpl>
+                        <dataType>text</dataType>
+                        <dataScope>name</dataScope>
+                        <label translate="true">Name</label>
+                        <labelVisible>false</labelVisible>
+                        <componentType>field</componentType>
+                    </settings>
+                </field>
+                <field name="status" formElement="input" component="Magento_Ui/js/form/element/text">
+                    <settings>
+                        <elementTmpl>ui/dynamic-rows/cells/text</elementTmpl>
+                        <dataType>text</dataType>
+                        <dataScope>status</dataScope>
+                        <label translate="true">Status</label>
+                        <labelVisible>false</labelVisible>
+                        <componentType>field</componentType>
+                    </settings>
+                </field>
+                <field name="attribute_set" formElement="input" component="Magento_Ui/js/form/element/text">
+                    <settings>
+                        <elementTmpl>ui/dynamic-rows/cells/text</elementTmpl>
+                        <dataType>text</dataType>
+                        <dataScope>attribute_set</dataScope>
+                        <label translate="true">Attribute set</label>
+                        <labelVisible>false</labelVisible>
+                        <componentType>field</componentType>
+                    </settings>
+                </field>
+                <field name="sku" formElement="input" component="Magento_Ui/js/form/element/text">
+                    <settings>
+                        <elementTmpl>ui/dynamic-rows/cells/text</elementTmpl>
+                        <dataType>text</dataType>
+                        <dataScope>sku</dataScope>
+                        <label translate="true">Sku</label>
+                        <labelVisible>false</labelVisible>
+                        <componentType>field</componentType>
+                    </settings>
+                </field>
+                <field name="price" formElement="input" component="Magento_Ui/js/form/element/text">
+                    <settings>
+                        <elementTmpl>ui/dynamic-rows/cells/text</elementTmpl>
+                        <dataType>text</dataType>
+                        <dataScope>price</dataScope>
+                        <label translate="true">Price</label>
+                        <labelVisible>false</labelVisible>
+                        <componentType>field</componentType>
+                    </settings>
+                </field>
+                <actionDelete>
+                    <settings>
+                        <additionalClasses>
+                            <class name="data-grid-actions-cell">true</class>
+                        </additionalClasses>
+                        <componentType>actionDelete</componentType>
+                        <dataType>text</dataType>
+                        <label translate="true">Actions</label>
+                    </settings>
+                </actionDelete>
+            </container>
+        </dynamicRows>
+        <modal name="assign_products_modal">
+            <settings>
+                <options>
+                    <option name="title" xsi:type="string" translate="true">Assign Products</option>
+                    <option name="buttons" xsi:type="array">
+                        <item name="0" xsi:type="array">
+                            <item name="text" xsi:type="string">Cancel</item>
+                            <item name="class" xsi:type="string">action-secondary</item>
+                            <item name="actions" xsi:type="array">
+                                <item name="0" xsi:type="array">
+                                    <item name="targetName" xsi:type="string">${ $.name }</item>
+                                    <item name="actionName" xsi:type="string">actionCancel</item>
+                                </item>
+                            </item>
+                        </item>
+                        <item name="1" xsi:type="array">
+                            <item name="text" xsi:type="string" translate="true">Done</item>
+                            <item name="class" xsi:type="string">action-primary</item>
+                            <item name="actions" xsi:type="array">
+                                <item name="0" xsi:type="array">
+                                    <item name="targetName" xsi:type="string">index = assign_products_grid</item>
+                                    <item name="actionName" xsi:type="string">save</item>
+                                </item>
+                                <item name="1" xsi:type="array">
+                                    <item name="targetName" xsi:type="string">${ $.name }</item>
+                                    <item name="actionName" xsi:type="string">actionDone</item>
+                                </item>
+                            </item>
+                        </item>
+                    </option>
+                </options>
+            </settings>
+            <insertListing name="assign_products_grid">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="cssclass" xsi:type="string">noclass</item>
+                    </item>
+                </argument>
+                <settings>
+                    <autoRender>true</autoRender>
+                    <dataScope>assign_products_grid</dataScope>
+                    <ns>group_product_listing</ns>
+                    <externalProvider>group_product_listing.group_product_listing_data_source</externalProvider>
+                    <selectionsProvider>group_product_listing.group_product_listing.product_columns.ids</selectionsProvider>
+                    <dataLinks>
+                        <imports>false</imports>
+                        <exports>true</exports>
+                    </dataLinks>
+                    <externalFilterMode>true</externalFilterMode>
+                </settings>
+            </insertListing>
+        </modal>
+    </fieldset>
 </form>

@@ -2,12 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.1.1]
-### Changes
+## [1.2.1] - 2022-10-25
+- Fix error with duplicate FOREIGN KEY constraint name (#12583) 
 
-- Correcting fix after click checkbox "select all" in product grid
-
-## [1.1.0] - 2022-01-19
-### Changes
-
-- Removal of disabled products on the product page and correcting view of text swatches
+## [1.2.0] - 2022-10-17
+- Initial new version module (v1.2.0)

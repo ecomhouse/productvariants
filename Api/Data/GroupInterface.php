@@ -11,41 +11,40 @@ interface GroupInterface
 
     /**
      * Get group_id
-     * @return string|null
+     * @return int|null
      */
-    public function getGroupId();
+    public function getGroupId(): ?int;
 
     /**
      * Set group_id
-     * @param string $groupId
-     * @return \EcomHouse\ProductVariants\Group\Api\Data\GroupInterface
+     * @param int $groupId
+     * @return \EcomHouse\ProductVariants\Api\Data\GroupInterface
      */
-    public function setGroupId($groupId);
+    public function setGroupId(int $groupId): \EcomHouse\ProductVariants\Api\Data\GroupInterface;
 
     /**
      * Get group_name
      * @return string|null
      */
-    public function getGroupName();
+    public function getGroupName(): string;
 
     /**
      * Set group_name
      * @param string $groupName
-     * @return \EcomHouse\ProductVariants\Group\Api\Data\GroupInterface
+     * @return \EcomHouse\ProductVariants\Api\Data\GroupInterface
      */
-    public function setGroupName($groupName);
+    public function setGroupName(string $groupName): \EcomHouse\ProductVariants\Api\Data\GroupInterface;
 
     /**
      * Get status
      * @return string|null
      */
-    public function getStatus();
+    public function getStatus(): ?string;
 
     /**
      * Set status
      * @param string $status
-     * @return \EcomHouse\ProductVariants\Group\Api\Data\GroupInterface
+     * @return \EcomHouse\ProductVariants\Api\Data\GroupInterface
      */
-    public function setStatus($status);
+    public function setStatus(string $status): \EcomHouse\ProductVariants\Api\Data\GroupInterface;
 }
-

@@ -3,19 +3,20 @@ declare(strict_types=1);
 
 namespace EcomHouse\ProductVariants\Api\Data;
 
-interface GroupSearchResultsInterface extends \Magento\Framework\Api\SearchResultsInterface
+use Magento\Framework\Api\SearchResultsInterface;
+
+interface GroupSearchResultsInterface extends SearchResultsInterface
 {
     /**
      * Get Group list.
      * @return \EcomHouse\ProductVariants\Api\Data\GroupInterface[]
      */
-    public function getItems();
+    public function getItems(): array;
 
     /**
      * Set group_name list.
      * @param \EcomHouse\ProductVariants\Api\Data\GroupInterface[] $items
      * @return $this
      */
-    public function setItems(array $items);
+    public function setItems(array $items): GroupSearchResultsInterface;
 }
-

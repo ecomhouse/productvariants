@@ -3,70 +3,62 @@ declare(strict_types=1);
 
 namespace EcomHouse\ProductVariants\Controller\Adminhtml\Group;
 
-use EcomHouse\ProductVariants\Model\Service\ProductVariantsService;
+use EcomHouse\ProductVariants\Api\Data\GroupInterfaceFactory;
+use EcomHouse\ProductVariants\Api\GroupRepositoryInterface;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\App\Request\DataPersistorInterface;
+use Magento\Backend\Model\View\Result\Redirect;
+use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
 
-class Save extends Action
+class Save extends Action implements HttpPostActionInterface
 {
-    /**
-     * @var DataPersistorInterface
-     */
-    protected $dataPersistor;
+    private GroupInterfaceFactory $groupInterfaceFactory;
+    private GroupRepositoryInterface $groupRepository;
 
-    /**
-     * @var ProductVariantsService
-     */
-    protected $productVariantsService;
-
-    /**
-     * @param Context $context
-     * @param DataPersistorInterface $dataPersistor
-     * @param ProductVariantsService $productVariantsService
-     */
     public function __construct(
         Context $context,
-        DataPersistorInterface $dataPersistor,
-        ProductVariantsService $productVariantsService
+        GroupInterfaceFactory $groupInterfaceFactory,
+        GroupRepositoryInterface $groupRepository
     ) {
-        $this->dataPersistor = $dataPersistor;
-        $this->productVariantsService = $productVariantsService;
         parent::__construct($context);
+        $this->groupInterfaceFactory = $groupInterfaceFactory;
+        $this->groupRepository = $groupRepository;
     }
 
-    /**
-     * Save action
-     *
-     * @return \Magento\Framework\Controller\ResultInterface
-     */
-    public function execute()
+    public function execute(): ResultInterface
     {
-        /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
+        /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
-        $data = $this->getRequest()->getPostValue('general');
+        $data = $this->getRequest()->getPostValue();
         if ($data) {
             $id = $this->getRequest()->getParam('group_id');
+            $group = $this->groupInterfaceFactory->create();
 
-            $model = $this->_objectManager->create(\EcomHouse\ProductVariants\Model\Group::class)->load($id);
-            if (!$model->getId() && $id) {
-                $this->messageManager->addErrorMessage(__('This Group no longer exists.'));
-                return $resultRedirect->setPath('*/*/');
+            if ($id) {
+                try {
+                    $group = $this->groupRepository->get((int)$id);
+                } catch (LocalizedException $e) {
+                    $this->messageManager->addErrorMessage(__('This Group no longer exists.'));
+                    return $resultRedirect->setPath('*/*/');
+                }
             }
 
-            $model->setData($data);
+            $data['product_ids'] = [];
+            $assignedProducts = $this->getRequest()->getParam('products');
+            if ($assignedProducts) {
+                $data['product_ids'] = array_column($assignedProducts['assign_products_grid'], 'entity_id');
+            }
+
+            $group->setData($data);
 
             try {
-                $model->save();
-                $attributesIds = $data['attributes_ids'] ?? [];
-                $this->productVariantsService->saveOptionsRelation($model, $attributesIds);
-                $this->saveProductsRelation($model);
+                $this->groupRepository->save($group);
                 $this->messageManager->addSuccessMessage(__('You saved the Group.'));
-                $this->dataPersistor->clear('ecomhouse_productvariants_group');
 
                 if ($this->getRequest()->getParam('back')) {
-                    return $resultRedirect->setPath('*/*/edit', ['group_id' => $model->getId()]);
+                    return $resultRedirect->setPath('*/*/edit', ['group_id' => $group->getGroupId()]);
                 }
                 return $resultRedirect->setPath('*/*/');
             } catch (LocalizedException $e) {
@@ -75,28 +67,8 @@ class Save extends Action
                 $this->messageManager->addExceptionMessage($e, __('Something went wrong while saving the Group.'));
             }
 
-            $this->dataPersistor->set('ecomhouse_productvariants_group', $data);
             return $resultRedirect->setPath('*/*/edit', ['group_id' => $this->getRequest()->getParam('group_id')]);
         }
         return $resultRedirect->setPath('*/*/');
     }
-
-    /**
-     * @param $model
-     */
-    protected function saveProductsRelation($model)
-    {
-        $data = $this->getRequest()->getPostValue('product');
-        $productsIds = str_replace("&on", "",  $data['list']);
-        $productsIds = str_replace("on", "",  $productsIds);
-        if ($productsIds) {
-            $productsIds = explode("&", $productsIds);
-        } else {
-            $productsIds = [];
-        }
-
-        $this->productVariantsService->saveProductsRelation($model, $productsIds);
-    }
-
 }
-
