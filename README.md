@@ -51,4 +51,4 @@ composer require ecomhouse/productvariants
 - [user guide PL](https://docs.google.com/presentation/d/10I9hlopEZfZa1vVYakOdzZ5Rkdr3E-_yeEC-hq8ZMok/edit?usp=sharing)
 - [user guide EN](https://docs.google.com/presentation/d/1Y33sTS6Mz6a0E2j_8mZTQORoegpA9_DIgpB42lbsWU0/edit?usp=sharing)
 
-[img1]: files/prev1.jpg
+[img1]: files/productvariantsframe.png
