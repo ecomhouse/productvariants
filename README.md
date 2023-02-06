@@ -1,5 +1,10 @@
 # Magento 2 Product Variants **by ecomhouse**
 
+## Compatibility
+Product Variants is successfully tested on the following Magento versions:
+
+- Magento Open Source 2.4.1 - 2.4.3 (PHP 7.4)
+
 ## Description
 
 **ecomhouse_productsvariants module is created to allow switching between product pages of simple products, by binding them together without using configurable product**
