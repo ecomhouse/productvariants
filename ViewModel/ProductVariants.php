@@ -67,6 +67,10 @@ class ProductVariants implements ArgumentInterface
                     }
                 }
 
+                if (count($group->getAttributeIds()) === 1) {
+                    return $this->generateVariants->execute($allProductsData);
+                }
+
             } catch (LocalizedException $e) {
                 return [];
             }

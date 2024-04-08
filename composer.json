@@ -2,7 +2,7 @@
     "name": "ecomhouse/productvariants",
     "description": "Magento 2 Product Variants by ecomhouse",
     "type": "magento2-module",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "license": "GNU LGPLv3",
     "authors": [
         {
